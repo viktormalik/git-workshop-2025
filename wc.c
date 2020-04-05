@@ -70,13 +70,18 @@ int process_cmdline(int argc, char *argv[]) {
             config.separator = argv[i][0];
             count_defined++;
             continue;
+        } else if (argv[i][0] != '-') {
+            config.filename = argv[i];
         } else if (strcmp("-h", argv[i]) == 0) {
             print_help();
             exit(0);
         }
     }
 
-    config.filename = argv[1];
+    if (config.filename == NULL) {
+        fprintf(stderr, "The input file is not specified.\n");
+        return 1;
+    }
 
     if (count_defined != 1) {
       fprintf(stderr, "Only one counter type is allowed in the same time.\n");
